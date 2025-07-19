@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parfume Profile - Оригинальные духи на разлив</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Raleway:wght@300;400;500&family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;500;600&family=Roboto:wght@300;400;500&family=Lora:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --gold: #d4af37;
+            --silver: #c0c0c0;
+            --dark: #1a1a1a;
+            --light: #f8f4f0;
+            --gray: #8a8a8a;
+        }
+        
+        body {
+            background: var(--light);
+            color: var(--dark);
+            font-family: 'Raleway', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Прелоадер */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            transition: opacity 1s ease-out;
+        }
+        
+        .preloader-logo {
+            text-align: center;
+            animation: rotate 5s linear infinite, pulse 2s ease-in-out infinite alternate;
+        }
+        
+        .logo-top {
+            font-size: 32px;
+            letter-spacing: 10px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 300;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .logo-bottom {
+            font-size: 22px;
+            letter-spacing: 16px;
+            color: var(--dark);
+            text-transform: uppercase;
+            font-weight: 300;
+            padding-left: 8px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .preloader-image {
+            max-width: 200px;
+            max-height: 200px;
+            display: none;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        /* Шапка */
+        header {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+        
+        .scrolled {
+            padding: 10px 5%;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 9px;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .logo-mini-top {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            font-weight: 300;
+            color: var(--gold);
+        }
+        
+        .logo-mini-bottom {
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 300;
+            padding-left: 2px;
+            color: var(--dark);
+        }
+        
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gold);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .admin-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: none; /* Скрыта по умолчанию */
+        }
+        
+        .admin-btn:hover {
+            background: var(--gold);
+            transform: scale(1.1);
+        }
+        
+        /* Герой секция */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+            background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url('https://images.unsplash.com/photo-1592945403242-ba5a5d0d3443?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(255, 255, 255, 0.8) 150%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease-out 0.5s forwards;
+        }
+        
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 400;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
+            color: var(--dark);
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .hero h1 .highlight {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            font-weight: 700;
+            display: block;
+            margin-top: 10px;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #444;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+        
+        .cta-button {
+            background: var(--dark);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        
+        .cta-button:hover {
+            background: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .cta-button:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark);
+            font-size: 14px;
+            text-decoration: none;
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+        
+        .scroll-down i {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: var(--gold);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-20px) translateX(-50%);}
+            60% {transform: translateY(-10px) translateX(-50%);}
+        }
+        
+        /* Витрина */
+        #perfumes {
+            padding: 120px 5% 100px;
+            background: linear-gradient(to bottom, #fafafa, #f0f0f0);
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 400;
+            margin-bottom: 80px;
+            letter-spacing: 2px;
+            color: var(--dark);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease-out 0.3s forwards;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: var(--gold);
+        }
+        
+        .perfumes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .perfume-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .perfume-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .perfume-img {
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .perfume-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(0,0,0,0.05));
+        }
+        
+        .perfume-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 500;
+            font-size: 18px;
+        }
+        
+        .perfume-info {
+            padding: 30px;
+        }
+        
+        .perfume-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .perfume-description {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.7;
+            min-height: 80px;
+            font-size: 16px;
+        }
+        
+        .volume-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .volume-option {
+            padding: 10px 20px;
+            background: #f5f5f5;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            border: 1px solid #eee;
+        }
+        
+        .volume-option:hover, .volume-option.active {
+            background: var(--dark);
+            color: white;
+            border-color: var(--dark);
+        }
+        
+        .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: var(--dark);
+            letter-spacing: 1px;
+        }
+        
+        .price span {
+            font-size: 1rem;
+            color: var(--gray);
+            text-decoration: line-through;
+            margin-right: 10px;
+        }
+        
+        .order-button {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: var(--dark);
+        }
+        
+        .order-button:hover {
+            background: var(--gold);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Форма заказа */
+        .order-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 50px 40px;
+            position: relative;
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+        
+        .modal-show {
+            opacity: 1;
+        }
+        
+        .modal-show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+        
+        .close-button:hover {
+            color: var(--dark);
+            background: #f5f5f5;
+        }
+        
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--dark);
+            font-weight: 400;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #444;
+            font-size: 15px;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            background: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .submit-button:hover {
+            background: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* О нас */
+        #about {
+            padding: 120px 5%;
+            background: white;
+            position: relative;
+        }
+        
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .about-image {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            height: 500px;
+            background: url('https://images.unsplash.com/photo-1595425970377-2d1d7974fda3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;
+        }
+        
+        .about-text {
+            padding: 30px 0;
+        }
+        
+        .about-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .about-text h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: var(--gold);
+        }
+        
+        .about-text p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+        
+        /* Подвал */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 80px 5% 40px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+            max-width: 1400px;
+            margin: 0 auto 50px;
+        }
+        
+        .footer-column h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: var(--gold);
+        }
+        
+        .footer-column p, .footer-column a {
+            color: #ccc;
+            line-height: 1.8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .footer-column a:hover {
+            color: var(--gold);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #333;
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+        
+        .social-icons a:hover {
+            background: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #333;
+            color: #999;
+            font-size: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Админ-панель */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+        
+        .admin-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            position: relative;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+        }
+        
+        .close-admin {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+        
+        .close-admin:hover {
+            color: var(--dark);
+        }
+        
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .admin-tab {
+            padding: 12px 25px;
+            background: #f5f5f5;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .admin-tab.active {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .admin-section {
+            display: none;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        .admin-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .admin-form .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .admin-form .full-width {
+            grid-column: span 2;
+        }
+        
+        .admin-submit {
+            grid-column: span 2;
+            margin-top: 20px;
+        }
+        
+        .perfume-list {
+            margin-top: 30px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .perfume-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .perfume-item:last-child {
+            border-bottom: none;
+        }
+        
+        .perfume-image-admin {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .perfume-image-admin img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .perfume-info-admin {
+            flex-grow: 1;
+        }
+        
+        .perfume-name-admin {
+            font-weight: 500;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .perfume-price-admin {
+            color: var(--gray);
+        }
+        
+        .perfume-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .perfume-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-btn {
+            background: var(--gold);
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .add-perfume {
+            margin-top: 20px;
+            background: var(--dark);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .add-perfume:hover {
+            background: var(--gold);
+        }
+        
+        .highlight-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .highlight-input input {
+            flex: 1;
+        }
+        
+        .highlight-preview {
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Dancing Script', cursive;
+            font-size: 20px;
+        }
+        
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .font-preview {
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-top: 10px;
+            min-height: 60px;
+            background: #f9f9f9;
+        }
+        
+        .image-upload {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .upload-btn {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero h1 .highlight {
+                font-size: 3.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .brand {
+                font-size: 22px;
+            }
+            
+            .logo-mini-top {
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+            
+            .logo-mini-bottom {
+                font-size: 8px;
+                letter-spacing: 3px;
+            }
+            
+            .section-title {
+                font-size: 2.3rem;
+            }
+            
+            .perfumes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .perfume-img {
+                height: 280px;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-image {
+                height: 350px;
+            }
+            
+            .admin-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-form .full-width, 
+            .admin-form .admin-submit {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Прелоадер -->
+    <div class="preloader">
+        <div class="preloader-logo">
+            <div class="logo-top">Parfume Profile</div>
+            <div class="logo-bottom">P R O F I I E</div>
+            <img src="" class="preloader-image" alt="Логотип">
+        </div>
+    </div>
+    
+    <!-- Шапка -->
+    <header>
+        <div class="logo-container" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="logo">
+                <div class="logo-mini-top">Parfume</div>
+                <div class="logo-mini-bottom">P R O F I I E</div>
+            </div>
+            <div class="brand">Parfume Profile</div>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Главная</a>
+            <a href="#perfumes">Коллекция</a>
+            <a href="#about">О нас</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+    </header>
+    
+    <!-- Герой секция -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>ИСКУССТВО <span class="highlight">аромата</span></h1>
+            <p>Откройте для себя эксклюзивную коллекцию оригинальных духов премиум-класса, доступных для разлива в выбранном вами объеме. Каждый аромат — это уникальная история, ожидающая своего момента.</p>
+            <button class="cta-button" id="explore-btn">Исследовать коллекцию</button>
+        </div>
+        <a href="#perfumes" class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+            <span>Наши ароматы</span>
+        </a>
+    </section>
+    
+    <!-- Витрина духов -->
+    <section id="perfumes" class="perfumes-section">
+        <h2 class="section-title">НАШИ АРОМАТЫ</h2>
+        <div class="perfumes-grid" id="perfumes-container">
+            <!-- Ароматы будут добавлены динамически -->
+        </div>
+    </section>
+    
+    <!-- О нас -->
+    <section id="about">
+        <div class="about-content">
+            <div class="about-image"></div>
+            <div class="about-text">
+                <h2>О Parfume Profile</h2>
+                <p>Parfume Profile - это уникальный проект, созданный для настоящих ценителей изысканных ароматов. Мы предлагаем оригинальные духи премиум-класса на разлив, что позволяет вам наслаждаться любимыми ароматами в удобном объеме и по доступной цене.</p>
+                <p>Наша миссия - сделать мир элитной парфюмерии доступнее, сохраняя при этом высочайшее качество продукции. Мы тщательно отбираем ароматы, сотрудничая только с проверенными поставщиками и брендами.</p>
+                <p>Каждый флакон наполняется вручную с особой заботой и вниманием к деталям. Мы верим, что парфюм - это не просто аромат, это отражение вашей индивидуальности и стиля.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Форма заказа -->
+    <div class="order-modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 class="modal-title">Оформление заказа</h2>
+            <form id="order-form">
+                <div class="form-group">
+                    <label for="perfume-name">Духи</label>
+                    <input type="text" id="perfume-name" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="volume">Объем</label>
+                    <select id="volume"></select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="name">Имя</label>
+                    <input type="text" id="name" required placeholder="Ваше имя">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="Ваш email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" required placeholder="Ваш телефон">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Адрес доставки</label>
+                    <textarea id="address" rows="3" required placeholder="Полный адрес доставки"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button">Подтвердить заказ</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Подвал -->
+    <footer id="contacts">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Parfume Profile</h3>
+                <p>Эксклюзивные оригинальные духи премиум-класса на разлив. Мы предлагаем уникальные ароматы в удобных для вас объемах.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Меню</h3>
+                <a href="#">Главная</a>
+                <a href="#perfumes">Коллекция</a>
+                <a href="#about">О нас</a>
+                <a href="#contacts">Контакты</a>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Контакты</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Москва, ул. Ароматная, 15</p>
+                <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+                <p><i class="fas fa-envelope"></i> info@parfumeprofile.ru</p>
+                <p><i class="fas fa-clock"></i> Пн-Пт: 10:00 - 20:00</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 Parfume Profile. Все права защищены.</p>
+        </div>
+    </footer>
+    
+    <!-- Кнопка админ-панели -->
+    <button class="admin-btn" id="admin-toggle">
+        <i class="fas fa-cog"></i>
+    </button>
+    
+    <!-- Админ-панель -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-content">
+            <div class="admin-header">
+                <h2 class="admin-title">Административная панель</h2>
+                <div class="close-admin" id="close-admin">&times;</div>
+            </div>
+            
+            <div class="admin-tabs">
+                <div class="admin-tab active" data-tab="site-settings">Настройки сайта</div>
+                <div class="admin-tab" data-tab="perfumes-management">Управление ароматами</div>
+                <div class="admin-tab" data-tab="content-management">Управление контентом</div>
+                <div class="admin-tab" data-tab="preloader-settings">Настройки прелоадера</div>
+            </div>
+            
+            <!-- Настройки сайта -->
+            <div class="admin-section active" id="site-settings">
+                <form id="site-settings-form" class="admin-form">
+                    <div class="form-group">
+                        <label for="site-title">Название сайта</label>
+                        <input type="text" id="site-title" value="Parfume Profile">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="logo-text-top">Логотип (верхний текст)</label>
+                        <input type="text" id="logo-text-top" value="Parfume">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="logo-text-bottom">Логотип (нижний текст)</label>
+                        <input type="text" id="logo-text-bottom" value="P R O F I I E">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="hero-title">Заголовок герой-секции</label>
+                        <input type="text" id="hero-title" value="ИСКУССТВО">
+                    </div>
+                    
+                    <div class="form-group full-width highlight-input">
+                        <label for="hero-highlight">Выделенное слово</label>
+                        <input type="text" id="hero-highlight" value="аромата">
+                        <div class="highlight-preview" id="highlight-preview">ар</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="highlight-color">Цвет выделенного слова</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="color" id="highlight-color" value="#d4af37">
+                            <div class="color-preview" id="highlight-color-preview" style="background: #d4af37;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="hero-text">Текст герой-секции</label>
+                        <textarea id="hero-text" rows="4">Откройте для себя эксклюзивную коллекцию оригинальных духов премиум-класса, доступных для разлива в выбранном вами объеме. Каждый аромат — это уникальная история, ожидающая своего момента.</textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="footer-text">Текст в подвале</label>
+                        <textarea id="footer-text" rows="4">Эксклюзивные оригинальные духи премиум-класса на разлив. Мы предлагаем уникальные ароматы в удобных для вас объемах.</textarea>
+                    </div>
+                    
+                    <!-- Настройки шрифта для выделенного слова -->
+                    <div class="form-group">
+                        <label for="highlight-font">Шрифт для выделенного слова</label>
+                        <select id="highlight-font">
+                            <option value="'Dancing Script', cursive">Dancing Script</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                            <option value="'Montserrat', sans-serif">Montserrat</option>
+                            <option value="'Roboto', sans-serif">Roboto</option>
+                            <option value="'Lora', serif">Lora</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="highlight-weight">Жирность шрифта</label>
+                        <select id="highlight-weight">
+                            <option value="400">Обычный</option>
+                            <option value="500">Средний</option>
+                            <option value="600">Полужирный</option>
+                            <option value="700">Жирный</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="highlight-italic">Курсив</label>
+                        <select id="highlight-italic">
+                            <option value="normal">Нет</option>
+                            <option value="italic">Да</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="highlight-size">Размер шрифта (px)</label>
+                        <input type="number" id="highlight-size" min="30" max="100" value="80">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label>Предпросмотр:</label>
+                        <div class="font-preview" id="font-preview">
+                            <span style="font-size: 80px; font-family: 'Dancing Script', cursive; font-weight: 700; font-style: normal; color: #d4af37;">аромата</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button admin-submit">Сохранить настройки</button>
+                </form>
+            </div>
+            
+            <!-- Управление ароматами -->
+            <div class="admin-section" id="perfumes-management">
+                <h3>Добавить/Изменить аромат</h3>
+                <form id="add-perfume-form" class="admin-form">
+                    <input type="hidden" id="perfume-id" value="">
+                    
+                    <div class="form-group">
+                        <label for="admin-perfume-name">Название</label>
+                        <input type="text" id="admin-perfume-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="perfume-image">Изображение</label>
+                        <div class="image-upload">
+                            <input type="file" id="perfume-image" accept="image/*" style="display: none;">
+                            <div class="image-preview" id="perfume-image-preview">
+                                <span>Превью</span>
+                            </div>
+                            <button type="button" class="upload-btn" onclick="document.getElementById('perfume-image').click()">Загрузить изображение</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="perfume-desc">Описание</label>
+                        <textarea id="perfume-desc" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="base-price">Базовая цена (10мл)</label>
+                        <input type="number" id="base-price" min="0" step="100" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="discount-price">Цена со скидкой</label>
+                        <input type="number" id="discount-price" min="0" step="100">
+                    </div>
+                    
+                    <button type="submit" class="add-perfume" id="perfume-submit-btn">Добавить аромат</button>
+                </form>
+                
+                <h3 style="margin-top: 40px;">Список ароматов</h3>
+                <div class="perfume-list" id="perfume-list-admin">
+                    <!-- Ароматы будут добавлены динамически -->
+                </div>
+            </div>
+            
+            <!-- Управление контентом -->
+            <div class="admin-section" id="content-management">
+                <h3>Управление разделом "О нас"</h3>
+                <form id="about-settings-form" class="admin-form">
+                    <div class="form-group full-width">
+                        <label for="about-title">Заголовок</label>
+                        <input type="text" id="about-title" value="О Parfume Profile">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="about-text">Текст</label>
+                        <textarea id="about-text" rows="8">Parfume Profile - это уникальный проект, созданный для настоящих ценителей изысканных ароматов. Мы предлагаем оригинальные духи премиум-класса на разлив, что позволяет вам наслаждаться любимыми ароматами в удобном объеме и по доступной цене.
+
+Наша миссия - сделать мир элитной парфюмерии доступнее, сохраняя при этом высочайшее качество продукции. Мы тщательно отбираем ароматы, сотрудничая только с проверенными поставщиками и брендами.
+
+Каждый флакон наполняется вручную с особой заботой и вниманием к деталям. Мы верим, что парфюм - это не просто аромат, это отражение вашей индивидуальности и стиля.</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="about-image">Изображение</label>
+                        <div class="image-upload">
+                            <input type="file" id="about-image-file" accept="image/*" style="display: none;">
+                            <div class="image-preview" id="about-image-preview">
+                                <img src="https://images.unsplash.com/photo-1595425970377-2d1d7974fda3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Превью">
+                            </div>
+                            <button type="button" class="upload-btn" onclick="document.getElementById('about-image-file').click()">Загрузить изображение</button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button admin-submit">Сохранить настройки</button>
+                </form>
+                
+                <h3 style="margin-top: 40px;">Управление контактами</h3>
+                <form id="contacts-settings-form" class="admin-form">
+                    <div class="form-group">
+                        <label for="contacts-address">Адрес</label>
+                        <input type="text" id="contacts-address" value="Москва, ул. Ароматная, 15">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contacts-phone">Телефон</label>
+                        <input type="text" id="contacts-phone" value="+7 (495) 123-45-67">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contacts-email">Email</label>
+                        <input type="email" id="contacts-email" value="info@parfumeprofile.ru">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contacts-hours">Часы работы</label>
+                        <input type="text" id="contacts-hours" value="Пн-Пт: 10:00 - 20:00">
+                    </div>
+                    
+                    <button type="submit" class="submit-button admin-submit">Сохранить контакты</button>
+                </form>
+            </div>
+            
+            <!-- Настройки прелоадера -->
+            <div class="admin-section" id="preloader-settings">
+                <h3>Настройки прелоадера</h3>
+                <form id="preloader-settings-form" class="admin-form">
+                    <div class="form-group">
+                        <label>Тип прелоадера</label>
+                        <div>
+                            <label style="display: block; margin-bottom: 10px;">
+                                <input type="radio" name="preloader-type" value="text" checked> Текстовый логотип
+                            </label>
+                            <label style="display: block;">
+                                <input type="radio" name="preloader-type" value="image"> Изображение
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="text-preloader-settings">
+                        <div class="form-group">
+                            <label for="logo-text-top-preloader">Логотип (верхний текст)</label>
+                            <input type="text" id="logo-text-top-preloader" value="Parfume Profile">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="logo-text-bottom-preloader">Логотип (нижний текст)</label>
+                            <input type="text" id="logo-text-bottom-preloader" value="P R O F I I E">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="preloader-top-color">Цвет верхнего текста</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="color" id="preloader-top-color" value="#d4af37">
+                                <div class="color-preview" id="preloader-top-color-preview" style="background: #d4af37;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="preloader-bottom-color">Цвет нижнего текста</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="color" id="preloader-bottom-color" value="#1a1a1a">
+                                <div class="color-preview" id="preloader-bottom-color-preview" style="background: #1a1a1a;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="image-preloader-settings" style="display: none;">
+                        <div class="form-group">
+                            <label>Изображение для прелоадера</label>
+                            <div class="image-upload">
+                                <input type="file" id="preloader-image" accept="image/*" style="display: none;">
+                                <div class="image-preview" id="preloader-image-preview">
+                                    <span>Превью</span>
+                                </div>
+                                <button type="button" class="upload-btn" onclick="document.getElementById('preloader-image').click()">Загрузить изображение</button>
+                                <p style="font-size: 13px; color: #666; margin-top: 5px;">Рекомендуемый размер: 200x200 пикселей</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preloader-bg">Фоновый цвет</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="color" id="preloader-bg" value="#ffffff">
+                            <div class="color-preview" id="preloader-bg-preview" style="background: #ffffff;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preloader-blur">Затемнение фона (px)</label>
+                        <input type="number" id="preloader-blur" min="0" max="20" step="1" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preloader-opacity">Прозрачность (0.1-1)</label>
+                        <input type="number" id="preloader-opacity" min="0.1" max="1" step="0.1" value="0.95">
+                    </div>
+                    
+                    <button type="submit" class="submit-button admin-submit">Сохранить настройки</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Данные сайта
+        let siteData = {
+            siteTitle: "Parfume Profile",
+            logoTop: "Parfume",
+            logoBottom: "P R O F I I E",
+            heroTitle: "ИСКУССТВО",
+            heroHighlight: "аромата",
+            heroText: "Откройте для себя эксклюзивную коллекцию оригинальных духов премиум-класса, доступных для разлива в выбранном вами объеме. Каждый аромат — это уникальная история, ожидающая своего момента.",
+            footerText: "Эксклюзивные оригинальные духи премиум-класса на разлив. Мы предлагаем уникальные ароматы в удобных для вас объемах.",
+            aboutTitle: "О Parfume Profile",
+            aboutText: "Parfume Profile - это уникальный проект, созданный для настоящих ценителей изысканных ароматов. Мы предлагаем оригинальные духи премиум-класса на разлив, что позволяет вам наслаждаться любимыми ароматами в удобном объеме и по доступной цене.\n\nНаша миссия - сделать мир элитной парфюмерии доступнее, сохраняя при этом высочайшее качество продукции. Мы тщательно отбираем ароматы, сотрудничая только с проверенными поставщиками и брендами.\n\nКаждый флакон наполняется вручную с особой заботой и вниманием к деталям. Мы верим, что парфюм - это не просто аромат, это отражение вашей индивидуальности и стиля.",
+            aboutImage: "https://images.unsplash.com/photo-1595425970377-2d1d7974fda3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            contactsAddress: "Москва, ул. Ароматная, 15",
+            contactsPhone: "+7 (495) 123-45-67",
+            contactsEmail: "info@parfumeprofile.ru",
+            contactsHours: "Пн-Пт: 10:00 - 20:00",
+            preloaderBg: "#ffffff",
+            preloaderTopColor: "#d4af37",
+            preloaderBottomColor: "#1a1a1a",
+            preloaderBlur: 10,
+            preloaderOpacity: 0.95,
+            preloaderType: "text", // text или image
+            preloaderImage: "",
+            highlightFont: "'Dancing Script', cursive",
+            highlightWeight: "700",
+            highlightStyle: "normal",
+            highlightSize: "80",
+            highlightColor: "#d4af37",
+            perfumes: [
+                {
+                    id: 1,
+                    name: "Eau de Lumière",
+                    description: "Свежий цветочный аромат с нотами бергамота, жасмина и белого мускуса. Идеален для весенних дней.",
+                    basePrice: 1200,
+                    discountPrice: 1500,
+                    imageUrl: "https://images.unsplash.com/photo-1592945403242-ba5a5d0d3443?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                },
+                {
+                    id: 2,
+                    name: "Noir Essence",
+                    description: "Глубокий древесный аромат с аккордами пачули, сандала и черного перца. Для уверенных в себе.",
+                    basePrice: 1500,
+                    discountPrice: 1800,
+                    imageUrl: "https://images.unsplash.com/photo-1595425970377-2d1d7974fda3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                },
+                {
+                    id: 3,
+                    name: "Velvet Rose",
+                    description: "Роскошный цветочный букет с нотами дамасской розы, фиалки и ванили. Нежность и элегантность.",
+                    basePrice: 1350,
+                    discountPrice: 1600,
+                    imageUrl: "https://images.unsplash.com/photo-1595425970377-2d1d7974fda3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                },
+                {
+                    id: 4,
+                    name: "Amber Oud",
+                    description: "Восточный аромат с теплыми нотами амбры, уд и сладкого табака. Загадочность и страсть.",
+                    basePrice: 1650,
+                    discountPrice: 1900,
+                    imageUrl: "https://images.unsplash.com/photo-1595425970377-2d1d7974fda3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                }
+            ]
+        };
+
+        // Глобальные переменные для отслеживания кода
+        let keySequence = [];
+        const secretCode = "159301";
+
+        // Обработчик ввода секретного кода
+        document.addEventListener('keydown', function(e) {
+            // Принимаем только цифровые клавиши
+            if (e.key >= '0' && e.key <= '9') {
+                keySequence.push(e.key);
+                
+                // Сохраняем только последние 6 символов
+                if (keySequence.length > secretCode.length) {
+                    keySequence.shift();
+                }
+                
+                // Проверка совпадения с секретным кодом
+                if (keySequence.join('') === secretCode) {
+                    document.getElementById('admin-toggle').style.display = 'flex';
+                    alert('Админ-панель активирована! Кнопка управления появилась в правом нижнем углу.');
+                    keySequence = []; // Сбрасываем последовательность
+                }
+            }
+        });
+
+        // Прелоадер
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.preloader').style.display = 'none';
+                renderPerfumes();
+                applySiteSettings();
+                applyPreloaderSettings();
+            }, 3500);
+        });
+
+        // Прокрутка при нажатии на кнопку "Исследовать коллекцию"
+        document.getElementById('explore-btn').addEventListener('click', function() {
+            document.getElementById('perfumes').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+
+        // Прокрутка при нажатии на кнопку в навигации
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId !== '#') {
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Эффект при прокрутке для шапки
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Открытие модального окна
+        const modal = document.querySelector('.order-modal');
+        const closeButton = document.querySelector('.close-button');
+        
+        // Закрытие модального окна при клике на кнопку
+        closeButton.addEventListener('click', function() {
+            closeOrderModal();
+        });
+        
+        // Закрытие модального окна при клике вне контента
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeOrderModal();
+            }
+        });
+        
+        // Функция для закрытия модального окна
+        function closeOrderModal() {
+            modal.classList.remove('modal-show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+        
+        // Обработка выбора объема
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('volume-option')) {
+                const option = e.target;
+                const parent = option.parentElement;
+                const card = parent.closest('.perfume-card');
+                
+                // Удаляем активный класс у всех опций
+                parent.querySelectorAll('.volume-option').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // Добавляем активный класс выбранной опции
+                option.classList.add('active');
+                
+                // Получаем базовую цену из data-атрибута
+                const basePrice = parseInt(card.dataset.basePrice);
+                const volumes = ['5ml', '10ml', '20ml'];
+                const prices = [
+                    Math.round(basePrice * 0.75),
+                    basePrice,
+                    Math.round(basePrice * 1.5)
+                ];
+                
+                // Определяем индекс выбранного объема
+                const index = Array.from(parent.children).indexOf(option);
+                
+                // Обновляем цену
+                card.querySelector('.price').innerHTML = `<span>${prices[index]} ₽</span>`;
+            }
+        });
+
+        // Обработка формы заказа
+        const orderForm = document.getElementById('order-form');
+        orderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Собираем данные формы
+            const perfume = document.getElementById('perfume-name').value;
+            const volume = document.getElementById('volume').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            
+            // Формируем сообщение
+            const message = `Ваш заказ успешно оформлен!\n\nДетали заказа:\nДухи: ${perfume}\nОбъем: ${volume}\nИмя: ${name}\nEmail: ${email}\nТелефон: ${phone}\nАдрес: ${address}\n\nМы свяжемся с вами в ближайшее время для подтверждения.`;
+            
+            alert(message);
+            closeOrderModal();
+            orderForm.reset();
+        });
+
+        // Админ-панель
+        const adminPanel = document.getElementById('admin-panel');
+        const adminToggle = document.getElementById('admin-toggle');
+        const closeAdmin = document.getElementById('close-admin');
+        
+        // Переключение админ-панели
+        adminToggle.addEventListener('click', function() {
+            adminPanel.style.display = 'block';
+        });
+        
+        closeAdmin.addEventListener('click', function() {
+            adminPanel.style.display = 'none';
+        });
+        
+        // Переключение вкладок в админ-панели
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Удаляем активный класс у всех вкладок
+                document.querySelectorAll('.admin-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // Добавляем активный класс текущей вкладке
+                this.classList.add('active');
+                
+                // Скрываем все разделы
+                document.querySelectorAll('.admin-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Показываем выбранный раздел
+                const tabId = this.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Загрузка данных сайта в форму админки
+        document.getElementById('site-title').value = siteData.siteTitle;
+        document.getElementById('logo-text-top').value = siteData.logoTop;
+        document.getElementById('logo-text-bottom').value = siteData.logoBottom;
+        document.getElementById('hero-title').value = siteData.heroTitle;
+        document.getElementById('hero-highlight').value = siteData.heroHighlight;
+        document.getElementById('hero-text').value = siteData.heroText;
+        document.getElementById('footer-text').value = siteData.footerText;
+        document.getElementById('about-title').value = siteData.aboutTitle;
+        document.getElementById('about-text').value = siteData.aboutText;
+        document.getElementById('contacts-address').value = siteData.contactsAddress;
+        document.getElementById('contacts-phone').value = siteData.contactsPhone;
+        document.getElementById('contacts-email').value = siteData.contactsEmail;
+        document.getElementById('contacts-hours').value = siteData.contactsHours;
+        document.getElementById('preloader-bg').value = siteData.preloaderBg;
+        document.getElementById('preloader-top-color').value = siteData.preloaderTopColor;
+        document.getElementById('preloader-bottom-color').value = siteData.preloaderBottomColor;
+        document.getElementById('preloader-blur').value = siteData.preloaderBlur;
+        document.getElementById('preloader-opacity').value = siteData.preloaderOpacity;
+        document.getElementById('highlight-font').value = siteData.highlightFont;
+        document.getElementById('highlight-weight').value = siteData.highlightWeight;
+        document.getElementById('highlight-italic').value = siteData.highlightStyle;
+        document.getElementById('highlight-size').value = siteData.highlightSize;
+        document.getElementById('highlight-color').value = siteData.highlightColor;
+        document.getElementById('logo-text-top-preloader').value = siteData.siteTitle;
+        document.getElementById('logo-text-bottom-preloader').value = siteData.logoBottom;
+        
+        // Обновление превью цветов
+        document.getElementById('highlight-color').addEventListener('input', function() {
+            document.getElementById('highlight-color-preview').style.background = this.value;
+            updateFontPreview();
+        });
+        
+        // Настройки типа прелоадера
+        document.querySelectorAll('input[name="preloader-type"]').forEach(radio => {
+            radio.checked = radio.value === siteData.preloaderType;
+            
+            radio.addEventListener('change', function() {
+                if (this.value === "text") {
+                    document.getElementById('text-preloader-settings').style.display = 'block';
+                    document.getElementById('image-preloader-settings').style.display = 'none';
+                } else {
+                    document.getElementById('text-preloader-settings').style.display = 'none';
+                    document.getElementById('image-preloader-settings').style.display = 'block';
+                }
+            });
+        });
+        
+        // Инициализация видимости настроек прелоадера
+        if (siteData.preloaderType === "text") {
+            document.getElementById('text-preloader-settings').style.display = 'block';
+            document.getElementById('image-preloader-settings').style.display = 'none';
+        } else {
+            document.getElementById('text-preloader-settings').style.display = 'none';
+            document.getElementById('image-preloader-settings').style.display = 'block';
+        }
+        
+        // Обновление превью выделенного слова
+        document.getElementById('hero-highlight').addEventListener('input', function() {
+            const preview = document.getElementById('highlight-preview');
+            preview.textContent = this.value.substring(0, 5);
+            updateFontPreview();
+        });
+        
+        // Обновление превью цветов
+        document.getElementById('preloader-bg').addEventListener('input', function() {
+            document.getElementById('preloader-bg-preview').style.background = this.value;
+        });
+        document.getElementById('preloader-top-color').addEventListener('input', function() {
+            document.getElementById('preloader-top-color-preview').style.background = this.value;
+        });
+        document.getElementById('preloader-bottom-color').addEventListener('input', function() {
+            document.getElementById('preloader-bottom-color-preview').style.background = this.value;
+        });
+        
+        // Обновление превью шрифта
+        document.getElementById('highlight-font').addEventListener('change', updateFontPreview);
+        document.getElementById('highlight-weight').addEventListener('change', updateFontPreview);
+        document.getElementById('highlight-italic').addEventListener('change', updateFontPreview);
+        document.getElementById('highlight-size').addEventListener('input', updateFontPreview);
+        
+        function updateFontPreview() {
+            const font = document.getElementById('highlight-font').value;
+            const weight = document.getElementById('highlight-weight').value;
+            const style = document.getElementById('highlight-italic').value;
+            const size = document.getElementById('highlight-size').value;
+            const color = document.getElementById('highlight-color').value;
+            const text = document.getElementById('hero-highlight').value || 'аромата';
+            
+            const preview = document.getElementById('font-preview');
+            preview.innerHTML = `<span style="font-size: ${size}px; font-family: ${font}; font-weight: ${weight}; font-style: ${style}; color: ${color};">${text}</span>`;
+        }
+        
+        // Обработчики для загрузки изображений
+        document.getElementById('perfume-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('perfume-image-preview');
+                    preview.innerHTML = `<img src="${event.target.result}" alt="Превью">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('about-image-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('about-image-preview');
+                    preview.innerHTML = `<img src="${event.target.result}" alt="Превью">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('preloader-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('preloader-image-preview');
+                    preview.innerHTML = `<img src="${event.target.result}" alt="Превью">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Сохранение настроек сайта
+        document.getElementById('site-settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Обновляем данные сайта
+            siteData.siteTitle = document.getElementById('site-title').value;
+            siteData.logoTop = document.getElementById('logo-text-top').value;
+            siteData.logoBottom = document.getElementById('logo-text-bottom').value;
+            siteData.heroTitle = document.getElementById('hero-title').value;
+            siteData.heroHighlight = document.getElementById('hero-highlight').value;
+            siteData.heroText = document.getElementById('hero-text').value;
+            siteData.footerText = document.getElementById('footer-text').value;
+            siteData.highlightFont = document.getElementById('highlight-font').value;
+            siteData.highlightWeight = document.getElementById('highlight-weight').value;
+            siteData.highlightStyle = document.getElementById('highlight-italic').value;
+            siteData.highlightSize = document.getElementById('highlight-size').value;
+            siteData.highlightColor = document.getElementById('highlight-color').value;
+            
+            // Применяем изменения на сайте
+            applySiteSettings();
+            
+            alert('Настройки сайта успешно сохранены!');
+        });
+        
+        // Сохранение настроек "О нас"
+        document.getElementById('about-settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Обновляем данные
+            siteData.aboutTitle = document.getElementById('about-title').value;
+            siteData.aboutText = document.getElementById('about-text').value;
+            
+            // Обновляем изображение, если было загружено
+            const fileInput = document.getElementById('about-image-file');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    siteData.aboutImage = event.target.result;
+                    applyAboutSettings();
+                }
+                reader.readAsDataURL(file);
+            } else {
+                applyAboutSettings();
+            }
+            
+            alert('Настройки раздела "О нас" успешно сохранены!');
+        });
+        
+        // Сохранение контактов
+        document.getElementById('contacts-settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Обновляем данные
+            siteData.contactsAddress = document.getElementById('contacts-address').value;
+            siteData.contactsPhone = document.getElementById('contacts-phone').value;
+            siteData.contactsEmail = document.getElementById('contacts-email').value;
+            siteData.contactsHours = document.getElementById('contacts-hours').value;
+            
+            // Применяем изменения
+            applyContactsSettings();
+            
+            alert('Контакты успешно обновлены!');
+        });
+        
+        // Сохранение настроек прелоадера
+        document.getElementById('preloader-settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Обновляем данные
+            siteData.preloaderBg = document.getElementById('preloader-bg').value;
+            siteData.preloaderBlur = document.getElementById('preloader-blur').value;
+            siteData.preloaderOpacity = document.getElementById('preloader-opacity').value;
+            
+            // Тип прелоадера
+            const preloaderType = document.querySelector('input[name="preloader-type"]:checked').value;
+            siteData.preloaderType = preloaderType;
+            
+            if (preloaderType === "text") {
+                siteData.siteTitle = document.getElementById('logo-text-top-preloader').value;
+                siteData.logoBottom = document.getElementById('logo-text-bottom-preloader').value;
+                siteData.preloaderTopColor = document.getElementById('preloader-top-color').value;
+                siteData.preloaderBottomColor = document.getElementById('preloader-bottom-color').value;
+            } else {
+                // Обновляем изображение, если было загружено
+                const fileInput = document.getElementById('preloader-image');
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        siteData.preloaderImage = event.target.result;
+                        applyPreloaderSettings();
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    applyPreloaderSettings();
+                }
+            }
+            
+            // Применяем изменения
+            applyPreloaderSettings();
+            applySiteSettings();
+            
+            alert('Настройки прелоадера сохранены!');
+        });
+        
+        // Добавление/редактирование аромата
+        document.getElementById('add-perfume-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Получаем изображение
+            let imageUrl = '';
+            const fileInput = document.getElementById('perfume-image');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imageUrl = event.target.result;
+                    savePerfume(imageUrl);
+                }
+                reader.readAsDataURL(file);
+            } else if (document.getElementById('perfume-image-preview').querySelector('img')) {
+                imageUrl = document.getElementById('perfume-image-preview').querySelector('img').src;
+                savePerfume(imageUrl);
+            } else {
+                alert('Пожалуйста, загрузите изображение для аромата');
+            }
+        });
+        
+        function savePerfume(imageUrl) {
+            const perfumeId = document.getElementById('perfume-id').value;
+            let perfume;
+            
+            if (perfumeId) {
+                // Редактирование существующего аромата
+                perfume = siteData.perfumes.find(p => p.id == perfumeId);
+                perfume.name = document.getElementById('admin-perfume-name').value;
+                perfume.description = document.getElementById('perfume-desc').value;
+                perfume.basePrice = parseInt(document.getElementById('base-price').value);
+                perfume.discountPrice = parseInt(document.getElementById('discount-price').value) || 0;
+                perfume.imageUrl = imageUrl;
+                
+                alert('Аромат успешно обновлен!');
+            } else {
+                // Добавление нового аромата
+                perfume = {
+                    id: Date.now(), // Генерируем уникальный ID
+                    name: document.getElementById('admin-perfume-name').value,
+                    description: document.getElementById('perfume-desc').value,
+                    basePrice: parseInt(document.getElementById('base-price').value),
+                    discountPrice: parseInt(document.getElementById('discount-price').value) || 0,
+                    imageUrl: imageUrl
+                };
+                
+                siteData.perfumes.push(perfume);
+                alert('Новый аромат успешно добавлен!');
+            }
+            
+            renderPerfumes();
+            renderAdminPerfumes();
+            
+            // Очищаем форму
+            resetPerfumeForm();
+        }
+        
+        function resetPerfumeForm() {
+            document.getElementById('add-perfume-form').reset();
+            document.getElementById('perfume-id').value = '';
+            document.getElementById('perfume-image-preview').innerHTML = '<span>Превью</span>';
+            document.getElementById('perfume-submit-btn').textContent = 'Добавить аромат';
+        }
+        
+        // Функция для отображения ароматов
+        function renderPerfumes() {
+            const container = document.getElementById('perfumes-container');
+            container.innerHTML = '';
+            
+            siteData.perfumes.forEach((perfume, index) => {
+                const card = document.createElement('div');
+                card.className = 'perfume-card';
+                card.dataset.basePrice = perfume.basePrice;
+                
+                card.innerHTML = `
+                    <div class="perfume-img" style="background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('${perfume.imageUrl}'); background-size: cover; background-position: center;">
+                        <div class="perfume-number">${index < 9 ? '0' + (index+1) : index+1}</div>
+                    </div>
+                    <div class="perfume-info">
+                        <h3 class="perfume-title">${perfume.name}</h3>
+                        <p class="perfume-description">${perfume.description}</p>
+                        <div class="volume-selector">
+                            <div class="volume-option">5ml</div>
+                            <div class="volume-option active">10ml</div>
+                            <div class="volume-option">20ml</div>
+                        </div>
+                        <div class="price"><span>${perfume.discountPrice ? perfume.discountPrice + ' ₽' : ''}</span>${perfume.basePrice} ₽</div>
+                        <button class="order-button">Заказать</button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Обновляем обработчики событий для кнопок заказа
+            document.querySelectorAll('.order-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.perfume-card');
+                    const perfumeName = card.querySelector('.perfume-title').textContent;
+                    
+                    document.getElementById('perfume-name').value = perfumeName;
+                    
+                    // Обновляем выпадающий список объемов
+                    const volumeSelect = document.getElementById('volume');
+                    volumeSelect.innerHTML = '';
+                    
+                    const basePrice = parseInt(card.dataset.basePrice);
+                    const volumes = ['5ml', '10ml', '20ml'];
+                    const prices = [
+                        Math.round(basePrice * 0.75),
+                        basePrice,
+                        Math.round(basePrice * 1.5)
+                    ];
+                    
+                    volumes.forEach((vol, index) => {
+                        const option = document.createElement('option');
+                        option.value = vol;
+                        option.textContent = `${vol} - ${prices[index]} ₽`;
+                        if (index === 1) option.selected = true;
+                        volumeSelect.appendChild(option);
+                    });
+                    
+                    modal.style.display = 'flex';
+                    setTimeout(() => {
+                        modal.classList.add('modal-show');
+                    }, 10);
+                });
+            });
+        }
+        
+        // Функция для отображения ароматов в админ-панели
+        function renderAdminPerfumes() {
+            const container = document.getElementById('perfume-list-admin');
+            container.innerHTML = '';
+            
+            siteData.perfumes.forEach(perfume => {
+                const item = document.createElement('div');
+                item.className = 'perfume-item';
+                
+                item.innerHTML = `
+                    <div class="perfume-image-admin">
+                        <img src="${perfume.imageUrl}" alt="${perfume.name}">
+                    </div>
+                    <div class="perfume-info-admin">
+                        <div class="perfume-name-admin">${perfume.name}</div>
+                        <div class="perfume-price-admin">${perfume.basePrice} ₽ (10мл)</div>
+                    </div>
+                    <div class="perfume-actions">
+                        <button class="perfume-btn edit-btn" data-id="${perfume.id}">Изменить</button>
+                        <button class="perfume-btn delete-btn" data-id="${perfume.id}">Удалить</button>
+                    </div>
+                `;
+                
+                container.appendChild(item);
+            });
+            
+            // Обработчики для кнопок удаления
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    if (confirm('Вы уверены, что хотите удалить этот аромат?')) {
+                        siteData.perfumes = siteData.perfumes.filter(p => p.id !== id);
+                        renderPerfumes();
+                        renderAdminPerfumes();
+                    }
+                });
+            });
+            
+            // Обработчики для кнопок редактирования
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    const perfume = siteData.perfumes.find(p => p.id === id);
+                    
+                    if (perfume) {
+                        // Заполняем форму
+                        document.getElementById('perfume-id').value = perfume.id;
+                        document.getElementById('admin-perfume-name').value = perfume.name;
+                        document.getElementById('perfume-desc').value = perfume.description;
+                        document.getElementById('base-price').value = perfume.basePrice;
+                        document.getElementById('discount-price').value = perfume.discountPrice || '';
+                        
+                        // Показываем превью изображения
+                        const preview = document.getElementById('perfume-image-preview');
+                        preview.innerHTML = `<img src="${perfume.imageUrl}" alt="Превью">`;
+                        
+                        // Меняем текст кнопки
+                        document.getElementById('perfume-submit-btn').textContent = 'Сохранить изменения';
+                        
+                        // Прокручиваем к форме
+                        document.getElementById('add-perfume-form').scrollIntoView();
+                    }
+                });
+            });
+        }
+        
+        // Применение настроек сайта
+        function applySiteSettings() {
+            // Обновление заголовка сайта
+            document.querySelector('.brand').textContent = siteData.siteTitle;
+            
+            // Обновление логотипа
+            document.querySelector('.logo-mini-top').textContent = siteData.logoTop;
+            document.querySelector('.logo-mini-bottom').textContent = siteData.logoBottom;
+            
+            // Обновление прелоадера
+            document.querySelector('.logo-top').textContent = siteData.siteTitle;
+            document.querySelector('.logo-bottom').textContent = siteData.logoBottom;
+            
+            // Обновление герой-секции
+            document.querySelector('.hero h1').innerHTML = `
+                ${siteData.heroTitle} <span class="highlight">${siteData.heroHighlight}</span>
+            `;
+            document.querySelector('.hero p').textContent = siteData.heroText;
+            
+            // Обновление стиля выделенного слова
+            const highlight = document.querySelector('.hero h1 .highlight');
+            highlight.style.fontFamily = siteData.highlightFont;
+            highlight.style.fontWeight = siteData.highlightWeight;
+            highlight.style.fontStyle = siteData.highlightStyle;
+            highlight.style.fontSize = siteData.highlightSize + 'px';
+            highlight.style.color = siteData.highlightColor;
+            
+            // Обновление футера
+            document.querySelector('.footer-column p').textContent = siteData.footerText;
+        }
+        
+        // Применение настроек "О нас"
+        function applyAboutSettings() {
+            document.querySelector('#about .about-text h2').textContent = siteData.aboutTitle;
+            document.querySelector('#about .about-text p').innerHTML = siteData.aboutText.replace(/\n/g, '<br>');
+            document.querySelector('.about-image').style.background = `url('${siteData.aboutImage}') center/cover`;
+        }
+        
+        // Применение настроек контактов
+        function applyContactsSettings() {
+            const contacts = document.querySelector('#contacts .footer-column:nth-child(3)');
+            contacts.innerHTML = `
+                <h3>Контакты</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ${siteData.contactsAddress}</p>
+                <p><i class="fas fa-phone"></i> ${siteData.contactsPhone}</p>
+                <p><i class="fas fa-envelope"></i> ${siteData.contactsEmail}</p>
+                <p><i class="fas fa-clock"></i> ${siteData.contactsHours}</p>
+            `;
+        }
+        
+        // Применение настроек прелоадера
+        function applyPreloaderSettings() {
+            const preloader = document.querySelector('.preloader');
+            preloader.style.backgroundColor = siteData.preloaderBg;
+            preloader.style.backdropFilter = `blur(${siteData.preloaderBlur}px)`;
+            
+            // Преобразуем hex в rgba для прозрачности
+            const hexToRgb = (hex) => {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `${r}, ${g}, ${b}`;
+            };
+            
+            preloader.style.backgroundColor = `rgba(${hexToRgb(siteData.preloaderBg)}, ${siteData.preloaderOpacity})`;
+            
+            // Устанавливаем тип прелоадера
+            if (siteData.preloaderType === "text") {
+                document.querySelector('.logo-top').style.display = 'block';
+                document.querySelector('.logo-bottom').style.display = 'block';
+                document.querySelector('.preloader-image').style.display = 'none';
+                
+                document.querySelector('.logo-top').textContent = siteData.siteTitle;
+                document.querySelector('.logo-top').style.color = siteData.preloaderTopColor;
+                document.querySelector('.logo-bottom').textContent = siteData.logoBottom;
+                document.querySelector('.logo-bottom').style.color = siteData.preloaderBottomColor;
+            } else {
+                document.querySelector('.logo-top').style.display = 'none';
+                document.querySelector('.logo-bottom').style.display = 'none';
+                document.querySelector('.preloader-image').style.display = 'block';
+                
+                if (siteData.preloaderImage) {
+                    document.querySelector('.preloader-image').src = siteData.preloaderImage;
+                }
+            }
+        }
+        
+        // Инициализация
+        renderAdminPerfumes();
+        applySiteSettings();
+        applyAboutSettings();
+        applyContactsSettings();
+        applyPreloaderSettings();
+        updateFontPreview();
+    </script>
+</body>
+</html>
